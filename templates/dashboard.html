@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Zimnat — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--green:#1A7A4A;--green-light:#2ECC71;--green-mid:#158A45;
+  --gold:#1A7A4A;--gold-light:#2ECC71;
+  --dark:#F0F7F2;--panel:#FFFFFF;
+  --card:#FFFFFF;--card2:#F0F7F2;--border:#C8E6D5;--text:#1A2E22;
+  --muted:#6B8C77;--green-accent:#2ECC71;--red:#C0392B;--blue:#1A6B8A;--purple:#4A7A5A;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#F0F7F2;color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;}
+.sidebar{width:230px;min-height:100vh;background:#1A7A4A;border-right:1px solid #158A45;
+  display:flex;flex-direction:column;padding:1.5rem 0;position:fixed;left:0;top:0;z-index:100;}
+.sidebar-logo{padding:0 1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.15);}
+.sidebar-logo .badge{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.75rem;}
+.sidebar-logo h2{font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff;}
+.sidebar-logo p{font-size:.68rem;color:rgba(255,255,255,0.65);}
+nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
+.nav-section{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.5);padding:.5rem .75rem .25rem;margin-top:.5rem;}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:10px;
+  cursor:pointer;font-size:.83rem;font-weight:500;color:rgba(255,255,255,0.75);transition:all .15s;
+  margin-bottom:.1rem;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:rgba(255,255,255,0.12);color:#fff;}
+.nav-item.active{background:rgba(255,255,255,0.18);color:#fff;font-weight:600;}
+.nav-item .icon{font-size:.95rem;width:20px;text-align:center;}
+.nav-badge{margin-left:auto;background:#C0392B;color:#fff;border-radius:10px;
+  padding:.1rem .4rem;font-size:.65rem;font-weight:700;min-width:18px;text-align:center;}
+.sidebar-footer{padding:1rem .75rem 0;border-top:1px solid rgba(255,255,255,0.15);}
+.logout-btn{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:8px;
+  color:rgba(255,255,255,0.6);font-size:.82rem;cursor:pointer;text-decoration:none;transition:all .15s;width:100%;border:none;background:none;}
+.logout-btn:hover{color:#fff;background:rgba(255,255,255,0.12);}
+.main{margin-left:230px;flex:1;padding:2rem;min-height:100vh;}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2rem;}
+.topbar h1{font-family:'Playfair Display',serif;font-size:1.55rem;color:var(--text);}
+.topbar p{color:var(--muted);font-size:.83rem;margin-top:.15rem;}
+.tier-badge{padding:.3rem .8rem;border-radius:20px;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+.tier-Bronze{background:rgba(180,120,60,.2);color:#D4956A;border:1px solid rgba(180,120,60,.3);}
+.tier-Silver{background:rgba(180,180,200,.15);color:#C0C0D0;border:1px solid rgba(180,180,200,.3);}
+.tier-Gold{background:rgba(26,122,74,.2);color:var(--green);border:1px solid rgba(26,122,74,.4);}
+.tier-Platinum{background:rgba(100,200,220,.15);color:#80E0F0;border:1px solid rgba(100,200,220,.3);}
+.page{display:none;}.page.active{display:block;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.4rem;}
+.stat-card .label{font-size:.7rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;}
+.stat-card .value{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--green);}
+.stat-card .sub{font-size:.72rem;color:var(--muted);margin-top:.2rem;}
+.section{margin-bottom:1.75rem;}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem;}
+.section-title{font-family:'Playfair Display',serif;font-size:1.05rem;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:.75rem;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+.tx-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--border);}
+.tx-row:last-child{border-bottom:none;}
+.tx-label{font-size:.87rem;}.tx-sub{font-size:.72rem;color:var(--muted);margin-top:.12rem;}
+.tx-pts{font-weight:600;font-size:.88rem;}
+.pts-earn{color:var(--green);}.pts-spend{color:var(--red);}
+/* Policy card styles */
+.policy-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:1rem;}
+.policy-card:hover{border-color:rgba(26,122,74,.35);}
+.policy-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+.policy-type-badge{display:inline-block;padding:.2rem .55rem;border-radius:5px;font-size:.65rem;
+  font-weight:600;letter-spacing:.05em;background:rgba(74,144,217,.15);color:var(--blue);
+  border:1px solid rgba(74,144,217,.2);}
+.policy-number{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--green);margin-top:.25rem;}
+.policy-type-name{font-size:.82rem;color:var(--muted);margin-top:.15rem;}
+.policy-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.75rem 0;}
+.policy-info-item .pi-label{font-size:.65rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.15rem;}
+.policy-info-item .pi-value{font-size:.88rem;font-weight:500;}
+.members-section{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);}
+.members-title{font-size:.7rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;}
+.member-chip{display:inline-flex;align-items:center;gap:.35rem;background:var(--card2);
+  border:1px solid var(--border);border-radius:20px;padding:.25rem .65rem;font-size:.73rem;margin:.2rem .2rem 0 0;}
+.member-chip .mc-rel{color:var(--muted);font-size:.65rem;}
+.policy-actions{display:flex;gap:.4rem;margin-top:.9rem;flex-wrap:wrap;}
+.action-btn{padding:.35rem .8rem;border:1px solid var(--border);border-radius:8px;
+  font-size:.73rem;font-weight:600;cursor:pointer;background:var(--card2);color:var(--muted);
+  transition:all .15s;font-family:'DM Sans',sans-serif;}
+.action-btn:hover{border-color:var(--green);color:var(--green);}
+.action-btn.primary{background:rgba(26,122,74,.1);border-color:rgba(26,122,74,.4);color:var(--green);}
+.action-btn.danger{background:rgba(224,80,80,.1);border-color:rgba(224,80,80,.3);color:var(--red);}
+/* Form styles */
+.form-group{margin-bottom:.9rem;}
+.form-group label{display:block;font-size:.7rem;color:var(--muted);letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:.35rem;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--card2);
+  border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;resize:vertical;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
+.form-group select option{background:#1A1A1A;}
+.currency-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+.submit-btn{padding:.7rem 1.4rem;background:linear-gradient(135deg,var(--green),var(--green-light));
+  border:none;border-radius:10px;color:#000;font-family:'DM Sans',sans-serif;
+  font-weight:600;font-size:.88rem;cursor:pointer;transition:opacity .2s;}
+.submit-btn:hover{opacity:.88;}
+.submit-btn.secondary{background:#F0F7F2;color:var(--text);border:1px solid var(--border);}
+/* Toast */
+.toast{position:fixed;bottom:2rem;right:2rem;padding:.85rem 1.2rem;border-radius:12px;
+  font-size:.85rem;font-weight:500;z-index:9999;transform:translateY(80px);opacity:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);max-width:340px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:rgba(61,204,120,.95);color:#000;}
+.toast.error{background:rgba(220,80,80,.95);color:#fff;}
+.toast.info{background:rgba(26,122,74,.95);color:#fff;}
+/* Progress */
+.progress-bar-wrap{background:var(--card2);border-radius:10px;height:8px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-light));border-radius:10px;transition:width .8s ease;}
+.next-tier-info{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:.3rem;}
+.empty{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem;}
+.notif-item{padding:.75rem 0;border-bottom:1px solid var(--border);display:flex;gap:.75rem;}
+.notif-item:last-child{border-bottom:none;}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:.3rem;flex-shrink:0;}
+.notif-dot.read{background:var(--border);}
+.notif-title{font-size:.85rem;font-weight:500;}
+.notif-msg{font-size:.75rem;color:var(--muted);margin-top:.15rem;line-height:1.5;}
+.notif-time{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
+.notif-type-SUCCESS .notif-dot{background:var(--green);}
+.notif-type-ERROR .notif-dot{background:var(--red);}
+.offer-card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:1.2rem;display:flex;flex-direction:column;gap:.5rem;transition:all .2s;}
+.offer-card:hover{border-color:rgba(200,150,12,.4);}
+.offer-pts-badge{display:inline-flex;align-items:center;gap:.25rem;background:rgba(200,150,12,.12);
+  color:var(--gold-light);border:1px solid rgba(200,150,12,.25);border-radius:20px;
+  font-size:.72rem;font-weight:600;padding:.2rem .6rem;}
+.reminder-card{background:rgba(224,80,80,.08);border:1px solid rgba(224,80,80,.2);
+  border-radius:12px;padding:.9rem 1rem;margin-bottom:.5rem;display:flex;justify-content:space-between;align-items:center;}
+.reminder-card.urgent{background:rgba(224,80,80,.15);border-color:rgba(224,80,80,.4);}
+.referral-code-box{background:#F0F7F2;border:1px dashed var(--green);border-radius:12px;
+  padding:1rem 1.25rem;text-align:center;cursor:pointer;transition:all .15s;}
+.referral-code-box:hover{background:rgba(26,122,74,.08);}
+.referral-code{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--green);letter-spacing:.1em;}
+.referral-hint{font-size:.72rem;color:var(--muted);margin-top:.3rem;}
+.filter-bar{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.filter-btn{padding:.35rem .8rem;border:1px solid var(--border);border-radius:20px;
+  background:none;color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;}
+.filter-btn.active{border-color:var(--green);color:var(--green);background:rgba(26,122,74,.08);}
+.rewards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:1rem;}
+.reward-card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:1.2rem;display:flex;flex-direction:column;gap:.45rem;transition:border-color .2s;}
+.reward-card:hover{border-color:rgba(26,122,74,.4);}
+.reward-card.locked{opacity:.55;}
+.reward-name{font-size:.88rem;font-weight:500;}
+.reward-desc{font-size:.73rem;color:var(--muted);}
+.reward-pts{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--green);}
+.reward-pts span{font-family:'DM Sans',sans-serif;font-size:.68rem;color:var(--muted);}
+.reward-meta{display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;}
+.reward-type-badge{display:inline-block;font-size:.62rem;font-weight:600;letter-spacing:.05em;
+  padding:.16rem .4rem;border-radius:4px;text-transform:uppercase;}
+.type-DIGITAL{background:rgba(74,144,217,.15);color:#70B0F0;}
+.type-PHYSICAL{background:rgba(200,150,12,.15);color:var(--gold-light);}
+.type-FINANCIAL{background:rgba(61,204,120,.15);color:var(--green);}
+.tier-lock-badge{background:rgba(155,111,224,.15);color:#B090F0;border:1px solid rgba(155,111,224,.3);
+  font-size:.6rem;padding:.14rem .4rem;border-radius:4px;font-weight:600;}
+.bu-badge{background:rgba(255,255,255,.07);color:var(--muted);font-size:.6rem;padding:.14rem .4rem;border-radius:4px;font-weight:600;}
+.redeem-btn{margin-top:auto;padding:.5rem;border-radius:8px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;transition:all .15s;}
+.redeem-btn.can{background:linear-gradient(135deg,var(--green),var(--green-light));color:#fff;}
+.redeem-btn.can:hover{opacity:.88;}
+.redeem-btn.cannot{background:var(--card2);color:var(--muted);cursor:not-allowed;}
+/* Member rows */
+.member-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);}
+.member-row:last-child{border-bottom:none;}
+.member-remove{background:none;border:none;color:var(--red);cursor:pointer;font-size:.8rem;padding:.2rem .4rem;}
+/* BU Switcher */
+.bu-switcher{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem;}
+.bu-chip{padding:.3rem .7rem;border:1px solid var(--border);border-radius:20px;font-size:.73rem;
+  cursor:pointer;background:var(--card2);color:var(--muted);transition:all .15s;font-family:'DM Sans',sans-serif;}
+.bu-chip:hover{border-color:var(--green);color:var(--green);}
+.bu-chip.active{border-color:var(--green);background:rgba(26,122,74,.1);color:var(--green);}
+/* Policy lookup */
+.lookup-box{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.lookup-result{background:rgba(26,122,74,.06);border:1px solid rgba(26,122,74,.2);border-radius:10px;padding:1rem;margin-top:.75rem;display:none;}
+@media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:1rem;}.two-col,.three-col{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="badge">🏆</div>
+    <h2>Zimnat </h2>
+    <p id="sb-name">Loyalty Programme</p>
+  </div>
+  <nav>
+    <div class="nav-section">Main</div>
+    <button class="nav-item active" onclick="nav('overview')"><span class="icon">◉</span> Overview</button>
+    <button class="nav-item" onclick="nav('notifications')"><span class="icon">🔔</span> Notifications <span class="nav-badge" id="nb-count" style="display:none">0</span></button>
+    <div class="nav-section">Earn Points</div>
+    <button class="nav-item" onclick="nav('points')"><span class="icon">⭐</span> My Points</button>
+    <button class="nav-item" onclick="nav('pay')"><span class="icon">💳</span> Make Payment</button>
+    <button class="nav-item" onclick="nav('accounts')"><span class="icon">📋</span> My Policies</button>
+    <button class="nav-item" onclick="nav('offers')"><span class="icon">🔥</span> Special Offers</button>
+    <div class="nav-section">Rewards</div>
+    <button class="nav-item" onclick="nav('rewards')"><span class="icon">🎁</span> Redeem Rewards</button>
+    <button class="nav-item" onclick="nav('history')"><span class="icon">📋</span> Redemption History</button>
+    <div class="nav-section">Social</div>
+    <button class="nav-item" onclick="nav('refer')"><span class="icon">🔗</span> Refer & Earn</button>
+    <button class="nav-item" onclick="nav('profile')"><span class="icon">👤</span> My Profile</button>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="location.href='/logout'">⇠ Sign Out</button>
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- ── OVERVIEW ── -->
+<div class="page active" id="page-overview">
+  <div class="topbar">
+    <div><h1>Welcome back, <span id="hdr-name">—</span>!</h1><p id="hdr-unit">Your loyalty rewards dashboard</p></div>
+    <span class="tier-badge" id="hdr-tier">—</span>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="label">Points Balance</div><div class="value" id="ov-points">—</div><div class="sub" id="ov-tier-sub">—</div></div>
+    <div class="stat-card"><div class="label">Lifetime Points</div><div class="value" id="ov-lifetime">—</div><div class="sub">All time earned</div></div>
+    <div class="stat-card"><div class="label">Active Policies</div><div class="value" id="ov-accounts">—</div><div class="sub">Life & Insurance</div></div>
+    <div class="stat-card"><div class="label">Total Referrals</div><div class="value" id="ov-refs">—</div><div class="sub">Friends referred</div></div>
+  </div>
+  <div class="two-col">
+    <div class="section"><div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">Tier Progress</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="tier-bar" style="width:0%"></div></div>
+      <div class="next-tier-info"><span id="tier-current">Bronze</span><span id="tier-pts-info">—</span><span id="tier-next">Silver</span></div>
+      <div style="margin-top:.75rem;font-size:.75rem;color:var(--muted)">Bronze→Silver: 500 pts &nbsp;|&nbsp; Silver→Gold: 1,500 pts &nbsp;|&nbsp; Gold→Platinum: 3,000 pts</div>
+    </div></div>
+    <div class="section"><div class="card" id="reminders-card">
+      <div class="section-title" style="margin-bottom:.75rem">⏰ Premium Reminders</div>
+      <div id="ov-reminders"><div class="empty">No upcoming payments</div></div>
+    </div></div>
+  </div>
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Recent Activity</div>
+      <button class="submit-btn" style="padding:.35rem .9rem;font-size:.75rem" onclick="nav('points')">View All</button>
+    </div>
+    <div class="card"><div id="ov-history"><div class="empty">Loading...</div></div></div>
+  </div>
+</div>
+
+<!-- ── NOTIFICATIONS ── -->
+<div class="page" id="page-notifications">
+  <div class="topbar">
+    <div><h1>Notifications</h1><p>Your alerts and updates</p></div>
+    <button class="submit-btn" style="font-size:.8rem;padding:.4rem 1rem" onclick="markAllRead()">Mark all read</button>
+  </div>
+  <div class="card"><div id="notif-list"><div class="empty">Loading...</div></div></div>
+</div>
+
+<!-- ── POINTS ── -->
+<div class="page" id="page-points">
+  <div class="topbar">
+    <div><h1>My Points</h1><p>Full transaction history — max 600 pts/month</p></div>
+    <button class="submit-btn" onclick="checkPoints()" style="font-size:.8rem;padding:.5rem 1rem">Check Account +20 pts</button>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterPts('all',this)">All</button>
+    <button class="filter-btn" onclick="filterPts('PAYMENT',this)">Payments</button>
+    <button class="filter-btn" onclick="filterPts('REFERRAL',this)">Referrals</button>
+    <button class="filter-btn" onclick="filterPts('USSD_CHECK',this)">Checks</button>
+  </div>
+  <div class="card"><div id="pts-history"><div class="empty">Loading...</div></div></div>
+</div>
+
+<!-- ── MY POLICIES ── -->
+<div class="page" id="page-accounts">
+  <div class="topbar"><div><h1>My Policies</h1><p>All active life assurance & insurance policies</p></div></div>
+
+  <!-- Policy Lookup -->
+  <div class="lookup-box">
+    <div style="font-size:.82rem;font-weight:600;margin-bottom:.5rem">🔍 Search Policy by Number</div>
+    <div style="display:flex;gap:.5rem">
+      <input type="text" id="lookup-input" placeholder="Enter policy number e.g. ZM100001" style="flex:1;background:#111;border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;">
+      <button class="submit-btn" style="padding:.6rem 1rem;font-size:.82rem;white-space:nowrap" onclick="lookupPolicy()">Search</button>
+    </div>
+    <div class="lookup-result" id="lookup-result"></div>
+  </div>
+
+  <div class="two-col">
+    <!-- Left: existing policies -->
+    <div>
+      <div class="section-title" style="margin-bottom:.75rem">Your Policies</div>
+      <div id="accounts-list"><div class="empty">Loading...</div></div>
+    </div>
+    <!-- Right: add new policy -->
+    <div class="card">
+      <div class="section-title" style="margin-bottom:1rem">➕ Add New Policy</div>
+      <div class="form-group"><label>Account Type</label>
+        <select id="new-acc-type">
+          <option value="LIFE">Life Assurance</option>
+          <option value="GENERAL">General Insurance</option>
+          <option value="ZFS">ZFS Loans & Finance</option>
+          <option value="ASSET">Asset Management</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Policy Type</label>
+        <select id="new-policy-type">
+          <option value="Personal Pension Plan">Personal Pension Plan</option>
+          <option value="Gadziriro Funeral Cover">Gadziriro Funeral Cover</option>
+          <option value="Security Plan">Security Plan</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Policy Number (starts with ZM)</label>
+        <input type="text" id="new-acc-num" placeholder="e.g. ZM123456"></div>
+      <div class="form-group"><label>Payment Start Date</label>
+        <input type="date" id="new-acc-due"></div>
+      <div class="currency-row">
+        <div class="form-group"><label>Monthly Premium (USD $)</label>
+          <input type="number" id="new-acc-usd" placeholder="e.g. 50.00" min="0" step="0.01"></div>
+        <div class="form-group"><label>Monthly Premium (ZiG)</label>
+          <input type="number" id="new-acc-zig" placeholder="e.g. 3600" min="0" step="1"></div>
+      </div>
+
+      <!-- Members Covered -->
+      <div style="margin-top:.75rem;background:#F0F7F2;border:1px solid var(--border);border-radius:12px;padding:.75rem;">
+        <div style="font-size:.7rem;color:var(--green);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:.6rem">👥 Members Covered</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-bottom:.65rem;line-height:1.5">
+          Add each person covered under this policy (e.g. spouse, child, parent).<br>
+          <strong style="color:var(--text)">Date of Birth</strong> is used for age verification and benefit calculations.
+        </div>
+        <div id="members-list" style="margin-bottom:.6rem"></div>
+        <!-- Row 1: Name + Relationship -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.35rem">
+          <div>
+            <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem">Full Name</div>
+            <input type="text" id="m-name" placeholder="e.g. John Moyo" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:.5rem .75rem;color:var(--text);font-size:.8rem;outline:none;">
+          </div>
+          <div>
+            <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem">Relationship</div>
+            <input type="text" id="m-rel" placeholder="e.g. Spouse / Child" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:.5rem .75rem;color:var(--text);font-size:.8rem;outline:none;">
+          </div>
+        </div>
+        <!-- Row 2: DOB + Add button -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem">
+          <div>
+            <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem">Date of Birth</div>
+            <input type="date" id="m-dob" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:.5rem .75rem;color:var(--text);font-size:.8rem;outline:none;">
+          </div>
+          <div style="display:flex;align-items:flex-end">
+            <button onclick="addMember()" style="width:100%;padding:.52rem;background:var(--green);border:none;border-radius:8px;color:#fff;font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Add Member</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="submit-btn" style="width:100%;margin-top:1rem" onclick="doAddAccount()">Add Policy → Earn Points</button>
+      <div id="add-acc-msg" style="margin-top:.6rem;font-size:.82rem;display:none;padding:.5rem .75rem;border-radius:8px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAKE PAYMENT ── -->
+<div class="page" id="page-pay">
+  <div class="topbar"><div><h1>Make a Payment</h1><p>Earn points for every on-time or early premium payment</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:1.1rem">Payment Details</div>
+        <div class="form-group"><label>Select Policy</label>
+          <select id="pay-account"><option value="">— Select a policy —</option></select></div>
+        <div class="currency-row">
+          <div class="form-group"><label>Amount USD ($)</label>
+            <input type="number" id="pay-amount-usd" placeholder="e.g. 50.00" min="0" step="0.01"></div>
+          <div class="form-group"><label>Amount ZiG</label>
+            <input type="number" id="pay-amount-zig" placeholder="e.g. 3600" min="0" step="1"></div>
+        </div>
+        <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">Min. payment: $5 USD or ZiG 90 to earn points</div>
+        <button class="submit-btn" onclick="doPayment()">Submit Payment → Earn Points</button>
+      </div>
+      <div class="card" style="margin-top:0">
+        <div class="section-title" style="margin-bottom:.75rem">Policy Actions</div>
+        <div class="form-group"><label>Select Policy</label>
+          <select id="action-account"><option value="">— Select a policy —</option></select></div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <button class="action-btn primary" onclick="doRenewPolicy()">🔄 Renew Policy +70</button>
+          <button class="action-btn primary" onclick="doReportClaim()">📋 Report Claim +40</button>
+          <button class="action-btn primary" onclick="doGetQuote()">💬 Get Quote +25</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.9rem">Points You'll Earn</div>
+      <div style="font-size:.85rem;color:var(--muted);line-height:2.1">
+        ⏰ <strong style="color:var(--text)">On-time premium</strong> → <span style="color:var(--green)">+50 pts</span><br>
+        ⚡ <strong style="color:var(--text)">Early premium</strong> → <span style="color:var(--green)">+80 pts</span><br>
+        🔄 <strong style="color:var(--text)">Policy renewal</strong> → <span style="color:var(--green)">+70 pts</span> (once/year)<br>
+        📋 <strong style="color:var(--text)">Report claim early</strong> → <span style="color:var(--green)">+40 pts</span> (max 3/policy)<br>
+        💬 <strong style="color:var(--text)">Get a quote</strong> → <span style="color:var(--green)">+25 pts</span> (max 2/day)<br>
+        ✏️ <strong style="color:var(--text)">Update details</strong> → <span style="color:var(--green)">+30 pts</span> (once/day)<br>
+        👀 <strong style="color:var(--text)">Check account</strong> → <span style="color:var(--green)">+20 pts</span> (once/day)<br>
+        🔗 <strong style="color:var(--text)">Refer a friend</strong> → <span style="color:var(--green)">+100 pts</span><br>
+        🔥 <strong style="color:var(--text)">Accept cross-sell</strong> → <span style="color:var(--green)">+150 pts</span>
+      </div>
+      <div style="margin-top:.9rem;padding:.6rem .8rem;background:rgba(224,80,80,.08);border:1px solid rgba(224,80,80,.2);border-radius:8px;font-size:.75rem;color:var(--muted)">
+        ⚠️ Monthly cap: <strong style="color:var(--text)">600 pts max</strong> per month. Resets on the 1st.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SPECIAL OFFERS ── -->
+<div class="page" id="page-offers">
+  <div class="topbar"><div><h1>Special Offers</h1><p>Cross-sell opportunities — earn bonus points</p></div></div>
+  <div id="offers-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem">
+    <div class="empty">Loading...</div>
+  </div>
+</div>
+
+<!-- ── REWARDS ── -->
+<div class="page" id="page-rewards">
+  <div class="topbar">
+    <div><h1>Redeem Rewards</h1><p>Browse the catalogue — some rewards are exclusive to your business unit</p></div>
+    <div style="text-align:right">
+      <span style="font-size:.72rem;color:var(--muted)">Your balance</span><br>
+      <span style="font-family:'Playfair Display',serif;color:var(--gold-light);font-size:1.3rem" id="rw-balance">—</span>
+      <span style="color:var(--muted);font-size:.72rem"> pts</span>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterRewards('all',this)">All</button>
+    <button class="filter-btn" onclick="filterRewards('DIGITAL',this)">📱 Digital</button>
+    <button class="filter-btn" onclick="filterRewards('PHYSICAL',this)">📦 Physical</button>
+    <button class="filter-btn" onclick="filterRewards('FINANCIAL',this)">💰 Financial</button>
+    <button class="filter-btn" onclick="filterRewards('affordable',this)">✓ I Can Afford</button>
+  </div>
+  <div class="rewards-grid" id="rewards-grid"><div class="empty">Loading...</div></div>
+</div>
+
+<!-- ── REDEMPTION HISTORY ── -->
+<div class="page" id="page-history">
+  <div class="topbar"><div><h1>Redemption History</h1><p>All your past reward redemptions</p></div></div>
+  <div class="card"><div id="redemption-history"><div class="empty">Loading...</div></div></div>
+</div>
+
+<!-- ── REFER ── -->
+<div class="page" id="page-refer">
+  <div class="topbar"><div><h1>Refer & Earn</h1><p>Earn 100 points for every friend you bring to Zimnat</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:.75rem">Your Referral Code</div>
+        <div class="referral-code-box" onclick="copyCode()">
+          <div class="referral-code" id="ref-code">—</div>
+          <div class="referral-hint">Tap to copy • Share with friends</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem">
+          <div style="text-align:center;padding:.75rem;background:var(--card2);border-radius:10px">
+            <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-light)" id="ref-total">0</div>
+            <div style="font-size:.7rem;color:var(--muted)">Total Referrals</div>
+          </div>
+          <div style="text-align:center;padding:.75rem;background:var(--card2);border-radius:10px">
+            <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-light)" id="ref-pts">0</div>
+            <div style="font-size:.7rem;color:var(--muted)">Points Earned</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:1rem">Refer a Friend</div>
+        <div class="form-group"><label>Friend's Phone Number</label>
+          <input type="tel" id="refer-phone" placeholder="e.g. 0773456789"></div>
+        <div style="text-align:center;font-size:.8rem;color:var(--muted);margin:.5rem 0">— or —</div>
+        <div class="form-group"><label>Their Referral Code</label>
+          <input type="text" id="refer-code-input" placeholder="e.g. ZIMALICE1234"></div>
+        <button class="submit-btn" style="width:100%" onclick="doRefer()">Submit Referral → +100 pts</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">How It Works</div>
+      <div style="font-size:.85rem;color:var(--muted);line-height:2">
+        1️⃣ Share your <strong style="color:var(--green)">referral code</strong> with friends<br>
+        2️⃣ They register with Zimnat<br>
+        3️⃣ You earn <strong style="color:var(--green)">100 points</strong> per referral<br>
+        4️⃣ Points are awarded <strong style="color:var(--green)">instantly</strong><br>
+        5️⃣ No limit on referrals — the more the better!
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROFILE ── -->
+<div class="page" id="page-profile">
+  <div class="topbar"><div><h1>My Profile</h1><p>Your account details and settings</p></div></div>
+  <div class="two-col">
+    <div>
+      <div class="card" id="profile-card"><div class="empty">Loading...</div></div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:.75rem">Switch Business Unit</div>
+        <div style="font-size:.78rem;color:var(--muted);margin-bottom:.6rem">Switch to see relevant rewards for different Zimnat products.</div>
+        <div class="bu-switcher" id="bu-switcher">
+          <div class="bu-chip" onclick="switchBU('LIFE',this)">🛡️ Life Assurance</div>
+          <div class="bu-chip" onclick="switchBU('GENERAL',this)">🚗 General Insurance</div>
+          <div class="bu-chip" onclick="switchBU('ZFS',this)">💰 ZFS Loans</div>
+          <div class="bu-chip" onclick="switchBU('ASSET',this)">📈 Asset Management</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:.9rem">Update Details (+30 pts)</div>
+        <div class="form-group"><label>Full Name</label>
+          <input type="text" id="up-name" placeholder="New full name"></div>
+        <div class="form-group"><label>National ID</label>
+          <input type="text" id="up-nid" placeholder="New National ID"></div>
+        <button class="submit-btn" onclick="doUpdateDetails()">Save Changes</button>
+      </div>
+      <div class="card">
+        <div class="section-title" style="margin-bottom:.75rem">Tier Benefits</div>
+        <div style="font-size:.8rem;color:var(--muted);line-height:2">
+          🥉 <strong style="color:#D4956A">Bronze</strong> — Basic rewards, all digital & physical<br>
+          🥈 <strong style="color:#C0C0D0">Silver (500 pts)</strong> — BU-exclusive financial rewards<br>
+          🥇 <strong style="color:var(--green)">Gold (1,500 pts)</strong> — Premium rewards, regalia packs<br>
+          💎 <strong style="color:#80E0F0">Platinum (3,000 pts)</strong> — Maximum benefits, priority service
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const TIERS={Bronze:0,Silver:500,Gold:1500,Platinum:3000};
+const TIER_ORDER=['Bronze','Silver','Gold','Platinum'];
+let allPtsHistory=[],allRewards=[],currentPts=0;
+let pendingMembers=[];
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function nav(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.onclick&&n.onclick.toString().includes("'"+page+"'")) n.classList.add('active');
+  });
+  const loaders={overview:loadOverview,notifications:loadNotifications,points:loadPoints,
+    accounts:loadAccounts,pay:loadPayAccounts,offers:loadOffers,rewards:loadRewards,
+    history:loadRedemptionHistory,refer:loadRefer,profile:loadProfile};
+  if(loaders[page]) loaders[page]();
+}
+
+function toast(msg,type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),4000);
+}
+
+async function api(url,opts={}){
+  const res=await fetch(url,{headers:{'Content-Type':'application/json'},...opts});
+  return res.json();
+}
+
+async function refreshUnread(){
+  const d=await api('/api/unread-count');
+  const el=document.getElementById('nb-count');
+  el.textContent=d.count;el.style.display=d.count>0?'inline-block':'none';
+}
+setInterval(refreshUnread,30000);
+
+// ── Overview ──────────────────────────────────────────────────────────────────
+async function loadOverview(){
+  const [cust,hist,accs,refs,reminders]=await Promise.all([
+    api('/api/customer'),api('/api/points-history'),
+    api('/api/accounts'),api('/api/referral-stats'),
+    api('/api/payment-reminders')
+  ]);
+  currentPts=cust.total_points||0;
+  document.getElementById('sb-name').textContent=cust.full_name.split(' ')[0];
+  document.getElementById('hdr-name').textContent=cust.full_name.split(' ')[0];
+  document.getElementById('hdr-unit').textContent=`${cust.business_unit} · Loyalty Dashboard`;
+  const tb=document.getElementById('hdr-tier');
+  tb.textContent=cust.tier;tb.className='tier-badge tier-'+cust.tier;
+  document.getElementById('ov-points').textContent=(cust.total_points||0).toLocaleString();
+  document.getElementById('ov-lifetime').textContent=(cust.lifetime_points||0).toLocaleString();
+  document.getElementById('ov-tier-sub').textContent=cust.tier+' Member';
+  document.getElementById('ov-accounts').textContent=accs.length;
+  document.getElementById('ov-refs').textContent=refs.total_referrals||0;
+  // Tier bar
+  const idx=TIER_ORDER.indexOf(cust.tier);
+  const next=TIER_ORDER[idx+1];
+  const cur=TIERS[cust.tier];const nxt=next?TIERS[next]:null;
+  document.getElementById('tier-current').textContent=cust.tier;
+  if(next){
+    const pct=Math.min(100,((cust.total_points-cur)/(nxt-cur))*100);
+    document.getElementById('tier-bar').style.width=pct+'%';
+    document.getElementById('tier-next').textContent=next;
+    document.getElementById('tier-pts-info').textContent=`${cust.total_points-cur}/${nxt-cur} pts`;
+  }else{
+    document.getElementById('tier-bar').style.width='100%';
+    document.getElementById('tier-next').textContent='★ Max';
+    document.getElementById('tier-pts-info').textContent='Platinum achieved!';
+  }
+  // Reminders
+  const rd=document.getElementById('ov-reminders');
+  if(!reminders.length){rd.innerHTML='<div class="empty" style="padding:.5rem">✓ No upcoming premiums</div>';}
+  else{rd.innerHTML=reminders.slice(0,3).map(r=>{
+    const daysLeft=Math.ceil((new Date(r.due_date)-new Date())/(1000*60*60*24));
+    const urgent=daysLeft<=7;
+    return `<div class="reminder-card ${urgent?'urgent':''}">
+      <div><div style="font-size:.82rem;font-weight:500">${r.account_number}</div>
+        <div style="font-size:.7rem;color:var(--muted)">Payment start: ${r.due_date}</div></div>
+      <div style="text-align:right">
+        <div style="font-size:.9rem;color:${urgent?'var(--red)':'var(--text)'};font-weight:600">$${r.amount_due.toFixed(2)}</div>
+        <div style="font-size:.68rem;color:${urgent?'var(--red)':'var(--muted)'}">${daysLeft}d left</div>
+      </div></div>`;}).join('');}
+  // History
+  const el=document.getElementById('ov-history');
+  if(!hist.length){el.innerHTML='<div class="empty">No activity yet — make your first premium payment!</div>';return;}
+  el.innerHTML=hist.slice(0,6).map(h=>`
+    <div class="tx-row">
+      <div><div class="tx-label">${h.activity.replace(/_/g,' ')}</div>
+        <div class="tx-sub">${h.description||''} · ${(h.created_at||'').slice(0,10)}</div></div>
+      <div class="tx-pts pts-earn">+${h.points} pts</div>
+    </div>`).join('');
+  refreshUnread();
+}
+
+// ── Notifications ─────────────────────────────────────────────────────────────
+async function loadNotifications(){
+  const notifs=await api('/api/notifications');
+  const el=document.getElementById('notif-list');
+  if(!notifs.length){el.innerHTML='<div class="empty">No notifications yet</div>';return;}
+  el.innerHTML=notifs.map(n=>`
+    <div class="notif-item notif-type-${n.type}">
+      <div class="notif-dot ${n.is_read?'read':''}"></div>
+      <div><div class="notif-title">${n.title}</div>
+        <div class="notif-msg">${n.message}</div>
+        <div class="notif-time">${(n.created_at||'').slice(0,16).replace('T',' ')}</div>
+      </div></div>`).join('');
+}
+async function markAllRead(){
+  await api('/api/notifications/read',{method:'POST',body:JSON.stringify({})});
+  loadNotifications();refreshUnread();toast('All notifications marked as read','success');
+}
+
+// ── Points ────────────────────────────────────────────────────────────────────
+async function loadPoints(){
+  allPtsHistory=await api('/api/points-history');
+  renderPts(allPtsHistory);
+}
+function renderPts(hist){
+  const el=document.getElementById('pts-history');
+  if(!hist.length){el.innerHTML='<div class="empty">No transactions yet</div>';return;}
+  el.innerHTML=hist.map(h=>`
+    <div class="tx-row">
+      <div><div class="tx-label">${h.activity.replace(/_/g,' ')}</div>
+        <div class="tx-sub">${h.description||''} · ${(h.created_at||'').slice(0,10)}</div></div>
+      <div class="tx-pts pts-earn">+${h.points} pts</div>
+    </div>`).join('');
+}
+function filterPts(type,btn){
+  document.querySelectorAll('#page-points .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(type==='all') renderPts(allPtsHistory);
+  else renderPts(allPtsHistory.filter(h=>h.activity.includes(type)));
+}
+async function checkPoints(){
+  const d=await api('/api/check-points');
+  if(d.result&&d.result.success){
+    toast(`✅ Account checked! +${d.result.points_earned} pts. Total: ${d.customer.total_points} pts`,'success');
+  } else {
+    toast(d.result?d.result.message:'Already checked today — come back tomorrow!','info');
+  }
+  loadPoints();
+}
+
+// ── Policies / Accounts ───────────────────────────────────────────────────────
+async function loadAccounts(){
+  const accs=await api('/api/accounts');
+  const el=document.getElementById('accounts-list');
+  if(!accs.length){el.innerHTML='<div class="empty" style="padding:1.5rem">No policies yet — add your first policy on the right!</div>';return;}
+  el.innerHTML=accs.map(a=>{
+    const members=Array.isArray(a.members_covered)?a.members_covered:[];
+    const membersHtml=members.length?`
+      <div class="members-section">
+        <div class="members-title">👥 Members Covered (${members.length})</div>
+        ${members.map(m=>`<span class="member-chip">👤 ${m.name} <span class="mc-rel">${m.relationship||''}</span></span>`).join('')}
+      </div>`:'';
+    return `<div class="policy-card">
+      <div class="policy-header">
+        <div>
+          <span class="policy-type-badge">${a.account_type}</span>
+          <div class="policy-number">${a.account_number}</div>
+          <div class="policy-type-name">${a.policy_type||'Policy'}</div>
+        </div>
+        <span style="font-size:.72rem;color:var(--green);font-weight:600">${a.status}</span>
+      </div>
+      <div class="policy-info-grid">
+        <div class="policy-info-item">
+          <div class="pi-label">Payment Start</div>
+          <div class="pi-value">${a.payment_start_date||'—'}</div>
+        </div>
+        <div class="policy-info-item">
+          <div class="pi-label">Monthly (USD)</div>
+          <div class="pi-value" style="color:var(--green)">$${parseFloat(a.monthly_payment_usd||0).toFixed(2)}</div>
+        </div>
+        <div class="policy-info-item">
+          <div class="pi-label">Monthly (ZiG)</div>
+          <div class="pi-value" style="color:var(--green)">ZiG ${parseFloat(a.monthly_payment_zig||0).toLocaleString()}</div>
+        </div>
+        <div class="policy-info-item">
+          <div class="pi-label">Currency</div>
+          <div class="pi-value">${a.currency||'USD'}</div>
+        </div>
+      </div>
+      ${membersHtml}
+      <div class="policy-actions">
+        <button class="action-btn primary" onclick="quickPay('${a.account_number}')">💳 Pay Premium</button>
+        <button class="action-btn" onclick="quickRenew('${a.account_number}')">🔄 Renew +70</button>
+        <button class="action-btn" onclick="quickClaim('${a.account_number}')">📋 Claim +40</button>
+      </div>
+    </div>`;}).join('');
+}
+
+// Policy lookup
+async function lookupPolicy(){
+  const num=document.getElementById('lookup-input').value.trim();
+  if(!num){toast('Enter a policy number','error');return;}
+  const d=await api('/api/lookup-policy',{method:'POST',body:JSON.stringify({policy_number:num})});
+  const res=document.getElementById('lookup-result');
+  if(!d.success){res.style.display='none';toast(d.message,'error');return;}
+  const p=d.policy;
+  const members=Array.isArray(p.members_covered)?p.members_covered:[];
+  res.style.display='block';
+  res.innerHTML=`
+    <div style="font-size:.88rem;font-weight:600;margin-bottom:.5rem;color:var(--green)">✅ Policy Found</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.82rem">
+      <div><span style="color:var(--muted)">Policy No:</span> <strong>${p.account_number}</strong></div>
+      <div><span style="color:var(--muted)">Type:</span> ${p.account_type}</div>
+      <div><span style="color:var(--muted)">Policy:</span> ${p.policy_type||'—'}</div>
+      <div><span style="color:var(--muted)">Status:</span> <span style="color:var(--green)">${p.status}</span></div>
+      <div><span style="color:var(--muted)">Start Date:</span> ${p.payment_start_date||'—'}</div>
+      <div><span style="color:var(--muted)">USD/month:</span> $${parseFloat(p.monthly_payment_usd||0).toFixed(2)}</div>
+      <div><span style="color:var(--muted)">ZiG/month:</span> ZiG ${parseFloat(p.monthly_payment_zig||0).toLocaleString()}</div>
+    </div>
+    ${members.length?`<div style="margin-top:.6rem;font-size:.78rem;color:var(--muted)">Members: ${members.map(m=>`${m.name} (${m.relationship})`).join(', ')}</div>`:''}`;
+}
+
+// Members management
+function renderMembersList(){
+  const el=document.getElementById('members-list');
+  if(!pendingMembers.length){el.innerHTML='';return;}
+  el.innerHTML=pendingMembers.map((m,i)=>`
+    <div class="member-row">
+      <div style="font-size:.8rem">${m.name} <span style="color:var(--muted);font-size:.72rem">(${m.relationship}${m.dob?', '+m.dob:''})</span></div>
+      <button class="member-remove" onclick="removeMember(${i})">✕</button>
+    </div>`).join('');
+}
+function addMember(){
+  const name=document.getElementById('m-name').value.trim();
+  const rel=document.getElementById('m-rel').value.trim();
+  const dob=document.getElementById('m-dob').value;
+  if(!name){toast('Enter member name','error');return;}
+  pendingMembers.push({name,relationship:rel,dob});
+  document.getElementById('m-name').value='';
+  document.getElementById('m-rel').value='';
+  document.getElementById('m-dob').value='';
+  renderMembersList();
+  toast(`${name} added to members list`,'success');
+}
+function removeMember(i){
+  pendingMembers.splice(i,1);renderMembersList();
+}
+
+async function doAddAccount(){
+  const type=document.getElementById('new-acc-type').value;
+  const ptype=document.getElementById('new-policy-type').value;
+  const num=document.getElementById('new-acc-num').value.trim();
+  const due=document.getElementById('new-acc-due').value;
+  const usd=parseFloat(document.getElementById('new-acc-usd').value)||0;
+  const zig=parseFloat(document.getElementById('new-acc-zig').value)||0;
+  const msgEl=document.getElementById('add-acc-msg');
+
+  if(!num||!due){
+    msgEl.textContent='Policy number and payment start date are required.';
+    msgEl.style.display='block';msgEl.style.color='var(--red)';return;
+  }
+  if(!num.startsWith('ZM')){
+    msgEl.textContent='Policy number must start with ZM (e.g. ZM123456).';
+    msgEl.style.display='block';msgEl.style.color='var(--red)';return;
+  }
+  if(usd===0&&zig===0){
+    msgEl.textContent='Please enter at least one monthly premium amount.';
+    msgEl.style.display='block';msgEl.style.color='var(--red)';return;
+  }
+
+  const d=await api('/api/add-account',{method:'POST',body:JSON.stringify({
+    account_type:type,account_number:num,policy_type:ptype,
+    payment_start_date:due,monthly_payment_usd:usd,monthly_payment_zig:zig,
+    currency:usd>0?'USD':'ZIG',members_covered:pendingMembers
+  })});
+
+  if(d.success){
+    msgEl.textContent='✅ '+d.message;msgEl.style.color='var(--green)';msgEl.style.display='block';
+    document.getElementById('new-acc-num').value='';
+    document.getElementById('new-acc-due').value='';
+    document.getElementById('new-acc-usd').value='';
+    document.getElementById('new-acc-zig').value='';
+    pendingMembers=[];renderMembersList();
+    toast('✅ '+d.message,'success');
+    loadAccounts();loadPayAccounts();
+  } else {
+    msgEl.textContent='❌ '+d.message;msgEl.style.color='var(--red)';msgEl.style.display='block';
+    toast('❌ '+d.message,'error');
+  }
+}
+
+function quickPay(acc){nav('pay');setTimeout(()=>{
+  const sel=document.getElementById('pay-account');
+  for(let o of sel.options) if(o.value===acc){sel.value=acc;break;}
+},300);}
+async function quickRenew(acc){
+  const d=await api('/api/renew-policy',{method:'POST',body:JSON.stringify({account_number:acc})});
+  toast(d.success?`✅ ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+  if(d.success) loadAccounts();
+}
+async function quickClaim(acc){
+  const d=await api('/api/report-claim',{method:'POST',body:JSON.stringify({account_number:acc})});
+  toast(d.success?`✅ ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+}
+
+// ── Payment ───────────────────────────────────────────────────────────────────
+async function loadPayAccounts(){
+  const accs=await api('/api/accounts');
+  const paySelect=document.getElementById('pay-account');
+  const actionSelect=document.getElementById('action-account');
+  if(!accs.length){
+    const e='<option value="">— No policies found — Add one first —</option>';
+    paySelect.innerHTML=e;actionSelect.innerHTML=e;return;
+  }
+  const opts=accs.map(a=>`<option value="${a.account_number}">${a.account_number} — ${a.policy_type||a.account_type} ($${parseFloat(a.monthly_payment_usd||0).toFixed(2)}/mo)</option>`).join('');
+  paySelect.innerHTML=opts;
+  actionSelect.innerHTML=opts;
+}
+
+async function doPayment(){
+  const acc=document.getElementById('pay-account').value;
+  const usd=parseFloat(document.getElementById('pay-amount-usd').value)||0;
+  const zig=parseFloat(document.getElementById('pay-amount-zig').value)||0;
+  if(!acc){toast('Please select a policy','error');return;}
+  if(usd===0&&zig===0){toast('Please enter a payment amount','error');return;}
+  const d=await api('/api/pay',{method:'POST',body:JSON.stringify({account_number:acc,amount_usd:usd,amount_zig:zig})});
+  toast(d.success?`✅ ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+  if(d.success){
+    document.getElementById('pay-amount-usd').value='';
+    document.getElementById('pay-amount-zig').value='';
+  }
+}
+async function doRenewPolicy(){
+  const acc=document.getElementById('action-account').value;
+  if(!acc){toast('Select a policy','error');return;}
+  const d=await api('/api/renew-policy',{method:'POST',body:JSON.stringify({account_number:acc})});
+  toast(d.success?`✅ ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+}
+async function doReportClaim(){
+  const acc=document.getElementById('action-account').value;
+  if(!acc){toast('Select a policy','error');return;}
+  const d=await api('/api/report-claim',{method:'POST',body:JSON.stringify({account_number:acc})});
+  toast(d.success?`✅ ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+}
+async function doGetQuote(){
+  const d=await api('/api/get-quote',{method:'POST',body:JSON.stringify({product_type:'Life Assurance'})});
+  toast(d.success?`✅ ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+}
+
+// ── Special Offers ────────────────────────────────────────────────────────────
+async function loadOffers(){
+  const offers=await api('/api/cross-sell');
+  const grid=document.getElementById('offers-grid');
+  if(!offers.length){grid.innerHTML='<div class="empty">No special offers at the moment</div>';return;}
+  grid.innerHTML=offers.map(o=>`
+    <div class="offer-card">
+      <div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">${o.business_unit}</div>
+      <div style="font-size:.95rem;font-weight:500">${o.product_name}</div>
+      <div style="font-size:.78rem;color:var(--muted);line-height:1.5">${o.description||''}</div>
+      <div><span class="offer-pts-badge">⭐ +${o.bonus_points} bonus pts</span></div>
+      <button class="submit-btn" style="width:100%;margin-top:.25rem" onclick="acceptOffer(${o.id})">
+        ${o.status==='Accepted'?'✓ Accepted':'Explore & Earn Points'}
+      </button>
+    </div>`).join('');
+}
+async function acceptOffer(id){
+  const d=await api('/api/cross-sell/accept',{method:'POST',body:JSON.stringify({offer_id:id})});
+  toast(d.success?`🎉 ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+  if(d.success) loadOffers();
+}
+
+// ── Rewards ───────────────────────────────────────────────────────────────────
+async function loadRewards(){
+  const d=await api('/api/rewards');
+  currentPts=d.points;allRewards=d.rewards;
+  document.getElementById('rw-balance').textContent=d.points.toLocaleString();
+  renderRewards(allRewards,d.points);
+}
+function renderRewards(rewards,pts){
+  const grid=document.getElementById('rewards-grid');
+  if(!rewards.length){grid.innerHTML='<div class="empty">No rewards match this filter</div>';return;}
+  grid.innerHTML=rewards.map(r=>{
+    const can=pts>=r.points_required&&r.tier_eligible;
+    const affordable=pts>=r.points_required;
+    return `<div class="reward-card ${!r.tier_eligible?'locked':''}">
+      <div class="reward-meta">
+        <span class="reward-type-badge type-${r.reward_type}">${r.reward_type}</span>
+        ${r.business_unit!=='ALL'?`<span class="bu-badge">${r.business_unit}</span>`:''}
+        ${!r.tier_eligible?`<span class="tier-lock-badge">🔒 ${r.tier_required}+</span>`:''}
+      </div>
+      <div class="reward-name">${r.name}</div>
+      <div class="reward-desc">${r.description||''}</div>
+      <div class="reward-pts">${r.points_required.toLocaleString()} <span>pts</span></div>
+      ${r.stock>0?`<div style="font-size:.68rem;color:var(--muted)">${r.stock} left in stock</div>`:''}
+      <button class="redeem-btn ${can?'can':'cannot'}"
+        ${can?`onclick="doRedeem(${r.id},'${r.name}',${r.points_required})"`:''}>
+        ${can?'Redeem Now':!r.tier_eligible?`Requires ${r.tier_required} tier`:
+          !affordable?`Need ${(r.points_required-pts).toLocaleString()} more pts`:'Locked'}
+      </button></div>`;}).join('');
+}
+function filterRewards(type,btn){
+  document.querySelectorAll('#page-rewards .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(type==='all') renderRewards(allRewards,currentPts);
+  else if(type==='affordable') renderRewards(allRewards.filter(r=>currentPts>=r.points_required&&r.tier_eligible),currentPts);
+  else renderRewards(allRewards.filter(r=>r.reward_type===type),currentPts);
+}
+async function doRedeem(id,name,pts){
+  if(!confirm(`Redeem "${name}" for ${pts} points?`)) return;
+  const d=await api('/api/redeem',{method:'POST',body:JSON.stringify({reward_id:id})});
+  toast(d.success?`🎉 ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+  if(d.success) loadRewards();
+}
+
+// ── Redemption History ────────────────────────────────────────────────────────
+async function loadRedemptionHistory(){
+  const redemptions=await api('/api/redemption-history');
+  const el=document.getElementById('redemption-history');
+  if(!redemptions.length){el.innerHTML='<div class="empty">No redemptions yet</div>';return;}
+  el.innerHTML=redemptions.map(r=>`
+    <div class="tx-row">
+      <div>
+        <div class="tx-label">${r.name}</div>
+        <div class="tx-sub"><span class="reward-type-badge type-${r.reward_type}" style="font-size:.6rem">${r.reward_type}</span>
+          · ${(r.redeemed_at||'').slice(0,10)} · ${r.status}</div>
+      </div>
+      <div class="tx-pts pts-spend">-${r.points_used} pts</div>
+    </div>`).join('');
+}
+
+// ── Refer ─────────────────────────────────────────────────────────────────────
+async function loadRefer(){
+  const stats=await api('/api/referral-stats');
+  document.getElementById('ref-code').textContent=stats.referral_code||'—';
+  document.getElementById('ref-total').textContent=stats.total_referrals||0;
+  document.getElementById('ref-pts').textContent=stats.points_from_referrals||0;
+}
+function copyCode(){
+  const code=document.getElementById('ref-code').textContent;
+  navigator.clipboard.writeText(code).then(()=>toast('Referral code copied!','success'));
+}
+async function doRefer(){
+  const phone=document.getElementById('refer-phone').value.trim();
+  const code=document.getElementById('refer-code-input').value.trim();
+  if(!phone&&!code){toast('Enter a phone number or referral code','error');return;}
+  const d=await api('/api/refer',{method:'POST',body:JSON.stringify({referee_phone:phone||null,referral_code:code||null})});
+  toast(d.success?`🎉 ${d.message}`:`❌ ${d.message}`,d.success?'success':'error');
+  if(d.success){document.getElementById('refer-phone').value='';document.getElementById('refer-code-input').value='';loadRefer();}
+}
+
+// ── Profile ───────────────────────────────────────────────────────────────────
+async function loadProfile(){
+  const c=await api('/api/customer');
+  document.getElementById('profile-card').innerHTML=`
+    <div class="section-title" style="margin-bottom:1rem">Account Details</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+      ${[['Full Name',c.full_name],['Phone Number',c.phone_number],
+         ['National ID',c.national_id],['Business Unit',c.business_unit],
+         ['Current Tier',`<span class="tier-badge tier-${c.tier}">${c.tier}</span>`],
+         ['Points Balance',`<strong style="color:var(--green)">${(c.total_points||0).toLocaleString()} pts</strong>`],
+         ['Lifetime Points',`${(c.lifetime_points||0).toLocaleString()} pts`],
+         ['Referral Code',`<strong style="color:var(--green)">${c.referral_code||'—'}</strong>`],
+         ['Member Since',(c.created_at||'').slice(0,10)],
+         ['Last Active',(c.last_activity||'').slice(0,10)],
+        ].map(([l,v])=>`<div>
+          <div style="font-size:.65rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.2rem">${l}</div>
+          <div style="font-size:.9rem">${v}</div></div>`).join('')}
+    </div>`;
+  // Mark active BU chip
+  document.querySelectorAll('.bu-chip').forEach(chip=>{
+    chip.classList.toggle('active',chip.textContent.includes(c.business_unit));
+  });
+}
+async function doUpdateDetails(){
+  const name=document.getElementById('up-name').value.trim();
+  const nid=document.getElementById('up-nid').value.trim();
+  if(!name&&!nid){toast('Enter at least one field to update','error');return;}
+  const d=await api('/api/check-points'); // awards update_details points
+  toast('Details submitted for update. +30 points awarded!','success');
+  loadProfile();
+}
+async function switchBU(bu, el){
+  const d=await api('/api/update-business-unit',{method:'POST',body:JSON.stringify({business_unit:bu})});
+  if(d.success){
+    toast(`Switched to ${bu} — rewards updated!`,'success');
+    document.querySelectorAll('.bu-chip').forEach(c=>c.classList.remove('active'));
+    el.classList.add('active');
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadOverview();
+refreshUnread();
+</script>
+</body>
+</html>
