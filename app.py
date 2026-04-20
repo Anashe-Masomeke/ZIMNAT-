@@ -55,7 +55,8 @@ def login():
     result = authenticate_customer(national_id, pin)
     if result["success"]:
         session["phone_number"] = result["customer"]["phone_number"]
-        return jsonify({"success": True})
+        name = result["customer"]["full_name"].split()[0]
+        return jsonify({"success": True, "name": name})
     return jsonify({"success": False, "message": result["message"]})
 
 @app.route("/register", methods=["POST"])
@@ -277,7 +278,29 @@ def admin_login():
 def admin_logout():
     session.pop("admin_user", None)
     return redirect(url_for("admin_login"))
+ADMIN_SETUP_KEY = "zimnat-admin-2025"  # Change this to something secret
 
+@app.route("/admin/register", methods=["POST"])
+def admin_register():
+    d = request.get_json()
+    if d.get("setup_key") != ADMIN_SETUP_KEY:
+        return jsonify({"success": False, "message": "Invalid setup key."})
+    username = d.get("username", "").strip()
+    password = d.get("password", "").strip()
+    full_name = d.get("full_name", "").strip()
+    role = d.get("role", "admin")
+    if not all([username, password, full_name]):
+        return jsonify({"success": False, "message": "All fields are required."})
+    pw = hashlib.sha256(password.encode()).hexdigest()
+    try:
+        conn = get_connection()
+        conn.execute("INSERT INTO admin_users (username, password, role) VALUES (?,?,?)",
+                     (username, pw, role))
+        conn.commit()
+        conn.close()
+        return jsonify({"success": True, "message": f"Admin account '{username}' created."})
+    except Exception as e:
+        return jsonify({"success": False, "message": "Username already exists." if "UNIQUE" in str(e) else str(e)})
 @app.route("/api/admin/kpi")
 def api_admin_kpi():
     if not require_admin(): return jsonify({"error": "Unauthorized"}), 401
