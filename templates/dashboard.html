@@ -12,14 +12,14 @@
   --muted:#6B8C77;--green-accent:#2ECC71;--red:#C0392B;--blue:#1A6B8A;--purple:#4A7A5A;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#F0F7F2;color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;}
-.sidebar{width:230px;min-height:100vh;background:#1A7A4A;border-right:1px solid #158A45;
-  display:flex;flex-direction:column;padding:1.5rem 0;position:fixed;left:0;top:0;z-index:100;}
+.sidebar{width:230px;height:100vh;background:#1A7A4A;border-right:1px solid #158A45;
+  display:flex;flex-direction:column;padding:1.5rem 0;position:fixed;left:0;top:0;z-index:100;overflow-y:auto;}
 .sidebar-logo{padding:0 1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.15);}
 .sidebar-logo .badge{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
   border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:.75rem;}
 .sidebar-logo h2{font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff;}
 .sidebar-logo p{font-size:.68rem;color:rgba(255,255,255,0.65);}
-nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
+nav{flex:1;padding:1rem .5rem;overflow-y:auto;min-height:0;}
 .nav-section{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
   color:rgba(255,255,255,0.5);padding:.5rem .75rem .25rem;margin-top:.5rem;}
 .nav-item{display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border-radius:10px;
@@ -74,12 +74,12 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
 .policy-info-item .pi-value{font-size:.88rem;font-weight:500;}
 .members-section{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);}
 .members-title{font-size:.7rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;}
-.member-chip{display:inline-flex;align-items:center;gap:.35rem;background:var(--card2);
+.member-chip{display:inline-flex;align-items:center;gap:.35rem;background:#F0F7F2;
   border:1px solid var(--border);border-radius:20px;padding:.25rem .65rem;font-size:.73rem;margin:.2rem .2rem 0 0;}
 .member-chip .mc-rel{color:var(--muted);font-size:.65rem;}
 .policy-actions{display:flex;gap:.4rem;margin-top:.9rem;flex-wrap:wrap;}
 .action-btn{padding:.35rem .8rem;border:1px solid var(--border);border-radius:8px;
-  font-size:.73rem;font-weight:600;cursor:pointer;background:var(--card2);color:var(--muted);
+  font-size:.73rem;font-weight:600;cursor:pointer;background:#F0F7F2;color:var(--muted);
   transition:all .15s;font-family:'DM Sans',sans-serif;}
 .action-btn:hover{border-color:var(--green);color:var(--green);}
 .action-btn.primary{background:rgba(26,122,74,.1);border-color:rgba(26,122,74,.4);color:var(--green);}
@@ -88,7 +88,7 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
 .form-group{margin-bottom:.9rem;}
 .form-group label{display:block;font-size:.7rem;color:var(--muted);letter-spacing:.08em;
   text-transform:uppercase;margin-bottom:.35rem;}
-.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--card2);
+.form-group input,.form-group select,.form-group textarea{width:100%;background:#F0F7F2;
   border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;color:var(--text);
   font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s;resize:vertical;}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold);}
@@ -108,7 +108,7 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
 .toast.error{background:rgba(220,80,80,.95);color:#fff;}
 .toast.info{background:rgba(26,122,74,.95);color:#fff;}
 /* Progress */
-.progress-bar-wrap{background:var(--card2);border-radius:10px;height:8px;overflow:hidden;}
+.progress-bar-wrap{background:#F0F7F2;border-radius:10px;height:8px;overflow:hidden;}
 .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-light));border-radius:10px;transition:width .8s ease;}
 .next-tier-info{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-top:.3rem;}
 .empty{text-align:center;padding:2rem;color:var(--muted);font-size:.85rem;}
@@ -161,7 +161,7 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
   font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:600;transition:all .15s;}
 .redeem-btn.can{background:linear-gradient(135deg,var(--green),var(--green-light));color:#fff;}
 .redeem-btn.can:hover{opacity:.88;}
-.redeem-btn.cannot{background:var(--card2);color:var(--muted);cursor:not-allowed;}
+.redeem-btn.cannot{background:#F0F7F2;color:var(--muted);cursor:not-allowed;}
 /* Member rows */
 .member-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);}
 .member-row:last-child{border-bottom:none;}
@@ -169,11 +169,11 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
 /* BU Switcher */
 .bu-switcher{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem;}
 .bu-chip{padding:.3rem .7rem;border:1px solid var(--border);border-radius:20px;font-size:.73rem;
-  cursor:pointer;background:var(--card2);color:var(--muted);transition:all .15s;font-family:'DM Sans',sans-serif;}
+  cursor:pointer;background:#F0F7F2;color:var(--muted);transition:all .15s;font-family:'DM Sans',sans-serif;}
 .bu-chip:hover{border-color:var(--green);color:var(--green);}
 .bu-chip.active{border-color:var(--green);background:rgba(26,122,74,.1);color:var(--green);}
 /* Policy lookup */
-.lookup-box{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;}
+.lookup-box{background:#F0F7F2;border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem;}
 .lookup-result{background:rgba(26,122,74,.06);border:1px solid rgba(26,122,74,.2);border-radius:10px;padding:1rem;margin-top:.75rem;display:none;}
 @media(max-width:900px){.sidebar{display:none;}.main{margin-left:0;padding:1rem;}.two-col,.three-col{grid-template-columns:1fr;}}
 </style>
@@ -189,6 +189,7 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
   <nav>
     <div class="nav-section">Main</div>
     <button class="nav-item active" onclick="nav('overview')"><span class="icon">◉</span> Overview</button>
+    <button class="nav-item" id="nav-unit-btn" onclick="navUnit()"><span class="icon" id="nav-unit-icon">🛡️</span> <span id="nav-unit-label">My Unit</span></button>
     <button class="nav-item" onclick="nav('notifications')"><span class="icon">🔔</span> Notifications <span class="nav-badge" id="nb-count" style="display:none">0</span></button>
     <div class="nav-section">Earn Points</div>
     <button class="nav-item" onclick="nav('points')"><span class="icon">⭐</span> My Points</button>
@@ -208,6 +209,225 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
 </aside>
 
 <main class="main">
+
+<!-- ── UNIT BANNER (shown at top of overview) ── -->
+<div id="unit-banner" style="display:none;margin-bottom:1.25rem;padding:.85rem 1.2rem;border-radius:14px;
+  display:none;align-items:center;gap:.85rem;border:1.5px solid;">
+  <div id="unit-banner-icon" style="font-size:1.6rem;"></div>
+  <div>
+    <div id="unit-banner-title" style="font-size:.95rem;font-weight:600;"></div>
+    <div id="unit-banner-desc" style="font-size:.77rem;margin-top:.15rem;opacity:.8;"></div>
+  </div>
+  <button onclick="nav('profile')" style="margin-left:auto;padding:.35rem .8rem;border-radius:8px;
+    border:1.5px solid currentColor;background:transparent;cursor:pointer;
+    font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;color:inherit;">Switch Unit</button>
+</div>
+
+<!-- ── LIFE ASSURANCE UNIT PAGE ── -->
+<div class="page" id="page-unit-LIFE">
+  <div class="topbar"><div>
+    <h1>🛡️ Life Assurance</h1>
+    <p>Policies, pensions &amp; funeral cover — Earn &amp; redeem points</p>
+  </div></div>
+  <div class="three-col" style="margin-bottom:1.5rem">
+    <div style="background:#fff;border:1.5px solid #C8E6D5;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">🔄</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Renew Policy</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+70 pts per renewal (once/year)</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem" onclick="nav('pay')">Renew Now</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #C8E6D5;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">💳</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Pay Premium</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+50 on-time / +80 early</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem" onclick="nav('pay')">Pay Now</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #C8E6D5;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">📋</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Report Claim</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+40 pts for early reporting</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem" onclick="nav('pay')">Report Claim</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">🏆 Life Assurance Rewards</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        ✅ <strong style="color:var(--text)">Premium Discount 10%</strong> — 500 pts<br>
+        ✅ <strong style="color:var(--text)">Bonus Cover 5%</strong> — 800 pts (Silver+)<br>
+        ✅ <strong style="color:var(--text)">Extra Member Free</strong> — 1,200 pts (Gold+)<br>
+        ✅ <strong style="color:var(--text)">Priority Claims</strong> — 400 pts<br>
+        ✅ <strong style="color:var(--text)">Airtime &amp; Data</strong> — 100–900 pts
+      </div>
+      <button class="submit-btn" style="margin-top:1rem;width:100%;font-size:.82rem" onclick="nav('rewards')">Browse All Rewards</button>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">📌 Points You Can Earn</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        💳 On-time premium → <strong style="color:var(--green)">+50 pts</strong><br>
+        ⚡ Early premium → <strong style="color:var(--green)">+80 pts</strong><br>
+        🔄 Policy renewal → <strong style="color:var(--green)">+70 pts</strong><br>
+        📋 Report claim early → <strong style="color:var(--green)">+40 pts</strong><br>
+        👥 Update beneficiary → <strong style="color:var(--green)">+35 pts</strong><br>
+        🔗 Refer a friend → <strong style="color:var(--green)">+100 pts</strong><br>
+        👀 Check account → <strong style="color:var(--green)">+20 pts</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── GENERAL INSURANCE UNIT PAGE ── -->
+<div class="page" id="page-unit-GENERAL">
+  <div class="topbar"><div>
+    <h1>🚗 General Insurance</h1>
+    <p>Motor, home, travel &amp; business insurance</p>
+  </div></div>
+  <div class="three-col" style="margin-bottom:1.5rem">
+    <div style="background:#fff;border:1.5px solid #BEE3F8;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">🔄</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Renew Policy</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+70 pts for renewing on time</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#1A6B8A,#4A90D9)" onclick="nav('pay')">Renew</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #BEE3F8;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">📋</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Report Claim Early</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+40 pts for early reporting</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#1A6B8A,#4A90D9)" onclick="nav('pay')">Report Claim</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #BEE3F8;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">💬</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Get a Quote</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+25 pts per quote (max 2/day)</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#1A6B8A,#4A90D9)" onclick="nav('pay')">Get Quote</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">🏆 General Insurance Rewards</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        🚗 <strong style="color:var(--text)">Roadside Assist Free</strong> — 600 pts<br>
+        💸 <strong style="color:var(--text)">Premium Discount 10%</strong> — 500 pts<br>
+        ✅ <strong style="color:var(--text)">Priority Claims Processing</strong> — 400 pts<br>
+        📱 <strong style="color:var(--text)">Airtime $1–$5</strong> — 100–450 pts<br>
+        📦 <strong style="color:var(--text)">Branded Gifts</strong> — 300–1,200 pts
+      </div>
+      <button class="submit-btn" style="margin-top:1rem;width:100%;font-size:.82rem;background:linear-gradient(135deg,#1A6B8A,#4A90D9)" onclick="nav('rewards')">Browse Rewards</button>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">📌 Points You Can Earn</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        💳 On-time premium → <strong style="color:#1A6B8A">+50 pts</strong><br>
+        ⚡ Early premium → <strong style="color:#1A6B8A">+80 pts</strong><br>
+        🔄 Policy renewal → <strong style="color:#1A6B8A">+70 pts</strong><br>
+        📋 Early claim report → <strong style="color:#1A6B8A">+40 pts</strong><br>
+        💬 Get a quote → <strong style="color:#1A6B8A">+25 pts</strong><br>
+        🔗 Refer a friend → <strong style="color:#1A6B8A">+100 pts</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ZFS LOANS UNIT PAGE ── -->
+<div class="page" id="page-unit-ZFS">
+  <div class="topbar"><div>
+    <h1>💰 ZFS Loans &amp; Finance</h1>
+    <p>Loan repayments, early settlement &amp; account management</p>
+  </div></div>
+  <div class="three-col" style="margin-bottom:1.5rem">
+    <div style="background:#fff;border:1.5px solid #FECACA;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">💳</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Make Repayment</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+50 on-time / +80 early</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#922B21,#E74C3C)" onclick="nav('pay')">Pay Now</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #FECACA;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">⚡</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Early Settlement</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+80 pts for settling early</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#922B21,#E74C3C)" onclick="nav('pay')">Settle Early</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #FECACA;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">👀</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Check Account</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+20 pts per daily check</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#922B21,#E74C3C)" onclick="checkPoints()">Check Now</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">🏆 ZFS Exclusive Rewards</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        📅 <strong style="color:var(--text)">Grace Period 1 Month</strong> — 700 pts<br>
+        📉 <strong style="color:var(--text)">Interest Rate Cut 0.5%</strong> — 900 pts (Silver+)<br>
+        📱 <strong style="color:var(--text)">Airtime &amp; Data</strong> — 100–900 pts<br>
+        📦 <strong style="color:var(--text)">Branded Gifts</strong> — 300–1,200 pts
+      </div>
+      <button class="submit-btn" style="margin-top:1rem;width:100%;font-size:.82rem;background:linear-gradient(135deg,#922B21,#E74C3C)" onclick="nav('rewards')">Browse Rewards</button>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">📌 How to Earn Points</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        💳 On-time loan repayment → <strong style="color:#922B21">+50 pts</strong><br>
+        ⚡ Early repayment → <strong style="color:#922B21">+80 pts</strong><br>
+        🔗 Refer a friend → <strong style="color:#922B21">+100 pts</strong><br>
+        👀 Check account daily → <strong style="color:#922B21">+20 pts</strong><br>
+        ✏️ Update details → <strong style="color:#922B21">+30 pts</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ASSET MANAGEMENT UNIT PAGE ── -->
+<div class="page" id="page-unit-ASSET">
+  <div class="topbar"><div>
+    <h1>📈 Asset Management</h1>
+    <p>Investments, unit trusts &amp; portfolio management</p>
+  </div></div>
+  <div class="three-col" style="margin-bottom:1.5rem">
+    <div style="background:#fff;border:1.5px solid #E9D5FF;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">💼</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Regular Investment</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+60 pts for investing regularly</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#6B21A8,#9B59B6)" onclick="nav('pay')">Invest</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #E9D5FF;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">📊</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Check Portfolio</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+20 pts per daily check</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#6B21A8,#9B59B6)" onclick="checkPoints()">View Portfolio</button>
+    </div>
+    <div style="background:#fff;border:1.5px solid #E9D5FF;border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:.4rem">🤝</div>
+      <div style="font-weight:600;font-size:.9rem;margin-bottom:.3rem">Hold Long-Term</div>
+      <div style="font-size:.75rem;color:var(--muted);margin-bottom:.75rem">+90 pts for long-term hold</div>
+      <button class="submit-btn" style="width:100%;font-size:.8rem;padding:.5rem;background:linear-gradient(135deg,#6B21A8,#9B59B6)" onclick="nav('pay')">Learn More</button>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">🏆 Asset Management Rewards</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        📈 <strong style="color:var(--text)">Bonus Investment Units</strong> — 700 pts (Silver+)<br>
+        🎓 <strong style="color:var(--text)">Advisory Session Free</strong> — 500 pts<br>
+        📉 <strong style="color:var(--text)">Reduced Withdrawal Fees</strong> — available to Gold+<br>
+        📱 <strong style="color:var(--text)">Airtime &amp; Data</strong> — 100–900 pts<br>
+        📦 <strong style="color:var(--text)">Branded Gifts</strong> — 300–1,200 pts
+      </div>
+      <button class="submit-btn" style="margin-top:1rem;width:100%;font-size:.82rem;background:linear-gradient(135deg,#6B21A8,#9B59B6)" onclick="nav('rewards')">Browse Rewards</button>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-bottom:.75rem">📌 How to Earn Points</div>
+      <div style="font-size:.83rem;color:var(--muted);line-height:2.1">
+        💼 Regular investment → <strong style="color:#6B21A8">+60 pts</strong><br>
+        🤝 Long-term hold → <strong style="color:#6B21A8">+90 pts</strong><br>
+        📊 Check portfolio → <strong style="color:#6B21A8">+20 pts</strong><br>
+        🔗 Refer a friend → <strong style="color:#6B21A8">+100 pts</strong><br>
+        ✏️ Update details → <strong style="color:#6B21A8">+30 pts</strong>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ── OVERVIEW ── -->
 <div class="page active" id="page-overview">
@@ -274,7 +494,7 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
   <div class="lookup-box">
     <div style="font-size:.82rem;font-weight:600;margin-bottom:.5rem">🔍 Search Policy by Number</div>
     <div style="display:flex;gap:.5rem">
-      <input type="text" id="lookup-input" placeholder="Enter policy number e.g. ZM100001" style="flex:1;background:#111;border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;">
+      <input type="text" id="lookup-input" placeholder="Enter policy number e.g. ZM100001" style="flex:1;background:#fff;border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;">
       <button class="submit-btn" style="padding:.6rem 1rem;font-size:.82rem;white-space:nowrap" onclick="lookupPolicy()">Search</button>
     </div>
     <div class="lookup-result" id="lookup-result"></div>
@@ -447,11 +667,11 @@ nav{flex:1;padding:1rem .5rem;overflow-y:auto;}
           <div class="referral-hint">Tap to copy • Share with friends</div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem">
-          <div style="text-align:center;padding:.75rem;background:var(--card2);border-radius:10px">
+          <div style="text-align:center;padding:.75rem;background:#F0F7F2;border-radius:10px">
             <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-light)" id="ref-total">0</div>
             <div style="font-size:.7rem;color:var(--muted)">Total Referrals</div>
           </div>
-          <div style="text-align:center;padding:.75rem;background:var(--card2);border-radius:10px">
+          <div style="text-align:center;padding:.75rem;background:#F0F7F2;border-radius:10px">
             <div style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold-light)" id="ref-pts">0</div>
             <div style="font-size:.7rem;color:var(--muted)">Points Earned</div>
           </div>
@@ -1006,6 +1226,54 @@ async function switchBU(bu, el){
     el.classList.add('active');
   }
 }
+
+
+// ── UNIT FUNCTIONALITY ────────────────────────────────────────────────────────
+const UNIT_CONFIG = {
+  LIFE:    {icon:'🛡️', label:'Life Assurance',   color:'#1A7A4A', border:'#C8E6D5', bg:'rgba(26,122,74,0.06)'},
+  GENERAL: {icon:'🚗', label:'General Insurance', color:'#1A6B8A', border:'#BEE3F8', bg:'rgba(26,107,138,0.06)'},
+  ZFS:     {icon:'💰', label:'ZFS Loans',         color:'#922B21', border:'#FECACA', bg:'rgba(146,43,33,0.05)'},
+  ASSET:   {icon:'📈', label:'Asset Management',  color:'#6B21A8', border:'#E9D5FF', bg:'rgba(107,33,168,0.05)'},
+};
+
+function applyUnitTheme(bu) {
+  const cfg = UNIT_CONFIG[bu] || UNIT_CONFIG.LIFE;
+  // Update nav item
+  const navBtn = document.getElementById('nav-unit-btn');
+  const navIcon = document.getElementById('nav-unit-icon');
+  const navLabel = document.getElementById('nav-unit-label');
+  if(navBtn) { navIcon.textContent=cfg.icon; navLabel.textContent=cfg.label; }
+  // Show unit banner on overview
+  const banner = document.getElementById('unit-banner');
+  if(banner) {
+    banner.style.display='flex';
+    banner.style.background=cfg.bg;
+    banner.style.borderColor=cfg.border;
+    banner.style.color=cfg.color;
+    document.getElementById('unit-banner-icon').textContent=cfg.icon;
+    document.getElementById('unit-banner-title').textContent=cfg.label+' Mode';
+    document.getElementById('unit-banner-desc').textContent={
+      LIFE:'Manage life policies, pensions & funeral cover. Earn points for premium payments & renewals.',
+      GENERAL:'Motor, home, travel & business insurance. Earn points for renewals, claims & quotes.',
+      ZFS:'Loan repayments & early settlement. Earn grace periods & interest rate reductions.',
+      ASSET:'Regular investments & long-term holds. Earn bonus units & advisory sessions.'
+    }[bu]||'';
+  }
+}
+
+// Handle 'unit' page navigation using current BU
+function navUnit() {
+  api('/api/customer').then(c => {
+    const bu = c.business_unit || 'LIFE';
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    const unitPage = document.getElementById('page-unit-'+bu);
+    if(unitPage) unitPage.classList.add('active');
+    const btn = document.getElementById('nav-unit-btn');
+    if(btn) btn.classList.add('active');
+  });
+}
+
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 loadOverview();
