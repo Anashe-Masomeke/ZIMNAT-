@@ -3,63 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zimnat— Login</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Zimnat Rewards — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --green:#1A7A4A;--green-light:#2ECC71;--green-mid:#158A45;
-  --dark:#F0F7F2;--card:#FFFFFF;--border:#C8E6D5;
+  --bg:#F0F7F2;--card:#FFFFFF;--border:#C8E6D5;
   --text:#1A2E22;--muted:#6B8C77;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;
   display:flex;align-items:center;justify-content:center;
-  background-image:radial-gradient(ellipse 80% 50% at 50% -20%,rgba(26,122,74,0.12) 0%,transparent 60%);}
-.container{width:100%;max-width:430px;padding:2rem;}
-.logo{text-align:center;margin-bottom:2.5rem;}
-.logo-badge{display:inline-block;width:60px;height:60px;
+  background-image:radial-gradient(ellipse 90% 60% at 50% -10%,rgba(26,122,74,0.13) 0%,transparent 65%);}
+.container{width:100%;max-width:460px;padding:2rem;}
+.logo{text-align:center;margin-bottom:2rem;}
+.logo-badge{display:inline-flex;width:64px;height:64px;align-items:center;justify-content:center;
   background:linear-gradient(135deg,var(--green),var(--green-light));
-  border-radius:16px;line-height:60px;font-size:1.8rem;margin-bottom:1rem;
-  box-shadow:0 8px 32px rgba(26,122,74,0.3);}
-.logo h1{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--green);}
-.logo p{color:var(--muted);font-size:.85rem;margin-top:.25rem;}
-.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;
-  box-shadow:0 4px 24px rgba(26,122,74,0.08);}
-.tabs{display:flex;gap:.5rem;margin-bottom:2rem;background:#E8F5EE;border-radius:10px;padding:.25rem;}
-.tab{flex:1;padding:.6rem;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;
-  font-size:.85rem;font-weight:500;transition:all .2s;background:transparent;color:var(--muted);}
-.tab.active{background:var(--green);color:#fff;}
+  border-radius:18px;font-size:2rem;margin-bottom:.9rem;
+  box-shadow:0 8px 28px rgba(26,122,74,0.28);}
+.logo h1{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--green);}
+.logo p{color:var(--muted);font-size:.85rem;margin-top:.3rem;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:2rem;
+  box-shadow:0 6px 30px rgba(26,122,74,0.09);}
+
+/* ── TABS ─────────────────────────────────────────────── */
+.tabs{display:flex;gap:.4rem;margin-bottom:1.75rem;background:#E8F5EE;border-radius:11px;padding:.25rem;}
+.tab{flex:1;padding:.6rem;border:none;border-radius:9px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;
+  transition:all .2s;background:transparent;color:var(--muted);}
+.tab.active{background:var(--green);color:#fff;box-shadow:0 2px 8px rgba(26,122,74,0.3);}
 .form{display:none;}.form.active{display:block;}
-label{display:block;font-size:.75rem;font-weight:500;color:var(--muted);letter-spacing:.08em;
-  text-transform:uppercase;margin-bottom:.4rem;margin-top:1rem;}
+
+label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;margin-top:1rem;}
 input,select{width:100%;background:#F5FBF7;border:1px solid var(--border);border-radius:10px;
   padding:.75rem 1rem;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.95rem;
   transition:border-color .2s;outline:none;}
-input:focus,select:focus{border-color:var(--green);}
+input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(26,122,74,0.1);}
 select option{background:#fff;}
 .btn{width:100%;margin-top:1.5rem;padding:.85rem;
   background:linear-gradient(135deg,var(--green),var(--green-light));
-  border:none;border-radius:10px;color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;
-  font-size:.95rem;cursor:pointer;transition:opacity .2s,transform .1s;}
+  border:none;border-radius:11px;color:#fff;font-family:'DM Sans',sans-serif;
+  font-weight:600;font-size:.95rem;cursor:pointer;
+  transition:opacity .2s,transform .1s;letter-spacing:.01em;}
 .btn:hover{opacity:.9;transform:translateY(-1px);}
-.msg{margin-top:1rem;padding:.75rem 1rem;border-radius:8px;font-size:.85rem;display:none;}
-.msg.error{background:rgba(220,50,50,.08);border:1px solid rgba(220,50,50,.25);color:#c0392b;}
-.msg.success{background:rgba(26,122,74,.08);border:1px solid rgba(26,122,74,.3);color:var(--green);}
-.demo-hint{margin-top:1.5rem;padding:.75rem 1rem;background:rgba(26,122,74,.06);
-  border:1px solid rgba(26,122,74,.18);border-radius:10px;font-size:.78rem;color:var(--muted);line-height:1.7;}
+.btn:active{transform:translateY(0);}
+.msg{margin-top:.9rem;padding:.7rem 1rem;border-radius:9px;font-size:.84rem;display:none;}
+.msg.error{background:rgba(192,57,43,.07);border:1px solid rgba(192,57,43,.22);color:#c0392b;}
+.msg.success{background:rgba(26,122,74,.08);border:1px solid rgba(26,122,74,.28);color:var(--green);}
+.demo-hint{margin-top:1.5rem;padding:.8rem 1rem;background:rgba(26,122,74,.05);
+  border:1px solid rgba(26,122,74,.15);border-radius:10px;font-size:.77rem;color:var(--muted);line-height:1.75;}
 .demo-hint strong{color:var(--green);}
+
+/* ── BU GRID (register) ───────────────────────────────── */
 .bu-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.4rem;}
-.bu-option{padding:.6rem .75rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;
-  font-size:.8rem;font-weight:500;color:var(--muted);transition:all .2s;text-align:center;background:#F5FBF7;}
-.bu-option:hover{border-color:var(--green);color:var(--green);}
-.bu-option.selected{border-color:var(--green);background:rgba(26,122,74,.1);color:var(--green);}
+.bu-opt{padding:.65rem .75rem;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;
+  font-size:.8rem;font-weight:500;color:var(--muted);transition:all .2s;
+  text-align:center;background:#F5FBF7;}
+.bu-opt:hover{border-color:var(--green);color:var(--green);}
+.bu-opt.selected{border-color:var(--green);background:rgba(26,122,74,.1);color:var(--green);font-weight:600;}
+
+/* ── BUSINESS UNIT PICKER SCREEN ─────────────────────── */
+#bu-screen{display:none;position:fixed;inset:0;background:var(--bg);z-index:999;
+  display:none;align-items:center;justify-content:center;
+  background-image:radial-gradient(ellipse 90% 60% at 50% -10%,rgba(26,122,74,0.13) 0%,transparent 65%);}
+#bu-screen.show{display:flex;}
+.bu-pick-card{width:100%;max-width:520px;padding:2rem;background:var(--card);
+  border:1px solid var(--border);border-radius:22px;box-shadow:0 6px 30px rgba(26,122,74,0.12);}
+.bu-pick-card h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green);margin-bottom:.35rem;}
+.bu-pick-card p{font-size:.85rem;color:var(--muted);margin-bottom:1.5rem;}
+.bu-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.bu-pick-btn{padding:1.4rem 1rem;border:2px solid var(--border);border-radius:16px;
+  cursor:pointer;background:#F8FCF9;transition:all .22s;text-align:center;
+  font-family:'DM Sans',sans-serif;}
+.bu-pick-btn:hover{border-color:var(--green);background:rgba(26,122,74,.06);transform:translateY(-2px);}
+.bu-pick-btn .bpb-icon{font-size:2.2rem;margin-bottom:.55rem;}
+.bu-pick-btn .bpb-name{font-size:.95rem;font-weight:600;color:var(--text);}
+.bu-pick-btn .bpb-desc{font-size:.72rem;color:var(--muted);margin-top:.25rem;line-height:1.4;}
+.bu-pick-btn.life{border-color:rgba(26,122,74,.35);background:rgba(26,122,74,.04);}
+.bu-pick-btn.general{border-color:rgba(74,144,217,.35);background:rgba(74,144,217,.04);}
+.bu-pick-btn.zfs{border-color:rgba(192,57,43,.3);background:rgba(192,57,43,.03);}
+.bu-pick-btn.asset{border-color:rgba(142,68,173,.3);background:rgba(142,68,173,.03);}
+.bu-pick-btn.life:hover{border-color:var(--green);background:rgba(26,122,74,.1);}
+.bu-pick-btn.general:hover{border-color:#4A90D9;background:rgba(74,144,217,.1);}
+.bu-pick-btn.zfs:hover{border-color:#c0392b;background:rgba(192,57,43,.08);}
+.bu-pick-btn.asset:hover{border-color:#8E44AD;background:rgba(142,68,173,.08);}
+.bu-skip{margin-top:1.1rem;text-align:center;font-size:.78rem;color:var(--muted);}
+.bu-skip a{color:var(--green);cursor:pointer;text-decoration:underline;}
+.bu-user-name{font-weight:600;color:var(--text);}
 </style>
 </head>
 <body>
+
+<!-- ── BUSINESS UNIT PICKER ─────────────────────────────── -->
+<div id="bu-screen">
+  <div class="bu-pick-card">
+    <h2>Welcome, <span id="bu-user-greeting">there</span>! 👋</h2>
+    <p>Which Zimnat service are you here for today? Choose your business unit to personalise your dashboard and rewards.</p>
+    <div class="bu-pick-grid">
+      <div class="bu-pick-btn life" onclick="chooseBU('LIFE')">
+        <div class="bpb-icon">🛡️</div>
+        <div class="bpb-name">Life Assurance</div>
+        <div class="bpb-desc">Policies, pensions &amp; funeral cover</div>
+      </div>
+      <div class="bu-pick-btn general" onclick="chooseBU('GENERAL')">
+        <div class="bpb-icon">🚗</div>
+        <div class="bpb-name">General Insurance</div>
+        <div class="bpb-desc">Motor, home, travel &amp; business</div>
+      </div>
+      <div class="bu-pick-btn zfs" onclick="chooseBU('ZFS')">
+        <div class="bpb-icon">💰</div>
+        <div class="bpb-name">ZFS Loans</div>
+        <div class="bpb-desc">Loans, repayments &amp; credit</div>
+      </div>
+      <div class="bu-pick-btn asset" onclick="chooseBU('ASSET')">
+        <div class="bpb-icon">📈</div>
+        <div class="bpb-name">Asset Management</div>
+        <div class="bpb-desc">Investments &amp; unit trusts</div>
+      </div>
+    </div>
+    <div class="bu-skip">Already set? <a onclick="skipBU()">Continue with my saved unit</a></div>
+  </div>
+</div>
+
+<!-- ── LOGIN / REGISTER CARD ───────────────────────────── -->
 <div class="container">
   <div class="logo">
     <div class="logo-badge">🏆</div>
-    <h1>Zimnat </h1>
+    <h1>Zimnat Rewards</h1>
     <p>Loyalty Programme Portal</p>
   </div>
   <div class="card">
@@ -67,6 +138,8 @@ select option{background:#fff;}
       <button class="tab active" onclick="showTab('login')">Sign In</button>
       <button class="tab" onclick="showTab('register')">Register</button>
     </div>
+
+    <!-- LOGIN -->
     <div class="form active" id="tab-login">
       <label>National ID Number</label>
       <input type="text" id="l-nid" placeholder="e.g. 63-111111A01">
@@ -75,12 +148,14 @@ select option{background:#fff;}
       <button class="btn" onclick="doLogin()">Sign In</button>
       <div class="msg" id="l-msg"></div>
       <div class="demo-hint">
-        <strong>Demo accounts (login with National ID):</strong><br>
-        ID: <strong>63-111111A01</strong> &nbsp;PIN: <strong>1234</strong> (Alice — Life Assurance)<br>
-        ID: <strong>63-222222B02</strong> &nbsp;PIN: <strong>5678</strong> (Bob — Life Assurance)<br>
-        ID: <strong>63-333333C03</strong> &nbsp;PIN: <strong>9999</strong> (Carol — General Insurance)
+        <strong>Demo accounts:</strong><br>
+        ID: <strong>63-111111A01</strong> &nbsp;PIN: <strong>1234</strong> (Alice — Life)<br>
+        ID: <strong>63-222222B02</strong> &nbsp;PIN: <strong>5678</strong> (Bob — Life)<br>
+        ID: <strong>63-333333C03</strong> &nbsp;PIN: <strong>9999</strong> (Carol — General)
       </div>
     </div>
+
+    <!-- REGISTER -->
     <div class="form" id="tab-register">
       <label>Full Name</label>
       <input type="text" id="r-name" placeholder="e.g. Tendai Moyo">
@@ -90,10 +165,10 @@ select option{background:#fff;}
       <input type="text" id="r-nid" placeholder="e.g. 63-123456A25">
       <label>Business Unit</label>
       <div class="bu-grid">
-        <div class="bu-option selected" onclick="selectBU(this,'LIFE')">🛡️ Life Assurance</div>
-        <div class="bu-option" onclick="selectBU(this,'GENERAL')">🚗 General Insurance</div>
-        <div class="bu-option" onclick="selectBU(this,'ZFS')">💰 ZFS Loans</div>
-        <div class="bu-option" onclick="selectBU(this,'ASSET')">📈 Asset Management</div>
+        <div class="bu-opt selected" onclick="selectBU(this,'LIFE')">🛡️ Life Assurance</div>
+        <div class="bu-opt" onclick="selectBU(this,'GENERAL')">🚗 General Insurance</div>
+        <div class="bu-opt" onclick="selectBU(this,'ZFS')">💰 ZFS Loans</div>
+        <div class="bu-opt" onclick="selectBU(this,'ASSET')">📈 Asset Management</div>
       </div>
       <input type="hidden" id="r-unit" value="LIFE">
       <label>PIN (4–6 digits)</label>
@@ -103,40 +178,72 @@ select option{background:#fff;}
     </div>
   </div>
 </div>
+
 <script>
+let loggedInName = '';
+
 function showTab(tab){
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',tab==='login'?i===0:i===1));
   document.querySelectorAll('.form').forEach((f,i)=>f.classList.toggle('active',tab==='login'?i===0:i===1));
 }
 function selectBU(el,val){
-  document.querySelectorAll('.bu-option').forEach(b=>b.classList.remove('selected'));
+  document.querySelectorAll('.bu-opt').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');document.getElementById('r-unit').value=val;
 }
 function showMsg(id,text,type){
   const el=document.getElementById(id);el.textContent=text;el.className='msg '+type;el.style.display='block';
 }
+
 async function doLogin(){
   const nid=document.getElementById('l-nid').value.trim();
   const pin=document.getElementById('l-pin').value.trim();
   if(!nid||!pin){showMsg('l-msg','Please enter your National ID and PIN.','error');return;}
-  const res=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({national_id:nid,pin:pin})});
+  const res=await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({national_id:nid,pin:pin})});
   const data=await res.json();
-  if(data.success){window.location.href='/dashboard';}
-  else{showMsg('l-msg',data.message,'error');}
+  if(data.success){
+    loggedInName=data.name||'there';
+    document.getElementById('bu-user-greeting').textContent=loggedInName;
+    document.getElementById('bu-screen').classList.add('show');
+  } else {
+    showMsg('l-msg',data.message,'error');
+  }
 }
+
+async function chooseBU(bu){
+  await fetch('/api/update-business-unit',{method:'POST',
+    headers:{'Content-Type':'application/json'},body:JSON.stringify({business_unit:bu})});
+  window.location.href='/dashboard';
+}
+
+function skipBU(){
+  window.location.href='/dashboard';
+}
+
 async function doRegister(){
-  const body={full_name:document.getElementById('r-name').value.trim(),phone_number:document.getElementById('r-phone').value.trim(),
-    national_id:document.getElementById('r-nid').value.trim(),business_unit:document.getElementById('r-unit').value,
-    pin:document.getElementById('r-pin').value.trim()};
-  if(!body.full_name||!body.phone_number||!body.national_id||!body.pin){showMsg('r-msg','All fields are required.','error');return;}
-  const res=await fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const body={
+    full_name:document.getElementById('r-name').value.trim(),
+    phone_number:document.getElementById('r-phone').value.trim(),
+    national_id:document.getElementById('r-nid').value.trim(),
+    business_unit:document.getElementById('r-unit').value,
+    pin:document.getElementById('r-pin').value.trim()
+  };
+  if(!body.full_name||!body.phone_number||!body.national_id||!body.pin){
+    showMsg('r-msg','All fields are required.','error');return;
+  }
+  const res=await fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)});
   const data=await res.json();
-  if(data.success){showMsg('r-msg','Account created! You can now sign in.','success');setTimeout(()=>showTab('login'),1500);}
-  else{showMsg('r-msg',data.message,'error');}
+  if(data.success){
+    showMsg('r-msg','Account created! You can now sign in.','success');
+    setTimeout(()=>showTab('login'),1500);
+  } else {showMsg('r-msg',data.message,'error');}
 }
 document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'){const active=document.querySelector('.tab.active');
-    if(active.textContent.trim()==='Sign In') doLogin(); else doRegister();}
+  if(e.key==='Enter'){
+    const active=document.querySelector('.tab.active');
+    if(active.textContent.trim()==='Sign In') doLogin(); else doRegister();
+  }
 });
 </script>
 </body>
