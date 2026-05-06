@@ -25,15 +25,12 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .logo p{color:var(--muted);font-size:.85rem;margin-top:.3rem;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:2rem;
   box-shadow:0 6px 30px rgba(26,122,74,0.09);}
-
-/* ── TABS ─────────────────────────────────────────────── */
 .tabs{display:flex;gap:.4rem;margin-bottom:1.75rem;background:#E8F5EE;border-radius:11px;padding:.25rem;}
 .tab{flex:1;padding:.6rem;border:none;border-radius:9px;cursor:pointer;
   font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;
   transition:all .2s;background:transparent;color:var(--muted);}
 .tab.active{background:var(--green);color:#fff;box-shadow:0 2px 8px rgba(26,122,74,0.3);}
 .form{display:none;}.form.active{display:block;}
-
 label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);
   letter-spacing:.08em;text-transform:uppercase;margin-bottom:.4rem;margin-top:1rem;}
 input,select{width:100%;background:#F5FBF7;border:1px solid var(--border);border-radius:10px;
@@ -51,21 +48,14 @@ select option{background:#fff;}
 .msg{margin-top:.9rem;padding:.7rem 1rem;border-radius:9px;font-size:.84rem;display:none;}
 .msg.error{background:rgba(192,57,43,.07);border:1px solid rgba(192,57,43,.22);color:#c0392b;}
 .msg.success{background:rgba(26,122,74,.08);border:1px solid rgba(26,122,74,.28);color:var(--green);}
-.demo-hint{margin-top:1.5rem;padding:.8rem 1rem;background:rgba(26,122,74,.05);
-  border:1px solid rgba(26,122,74,.15);border-radius:10px;font-size:.77rem;color:var(--muted);line-height:1.75;}
-.demo-hint strong{color:var(--green);}
-
-/* ── BU GRID (register) ───────────────────────────────── */
 .bu-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.4rem;}
 .bu-opt{padding:.65rem .75rem;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;
   font-size:.8rem;font-weight:500;color:var(--muted);transition:all .2s;
   text-align:center;background:#F5FBF7;}
 .bu-opt:hover{border-color:var(--green);color:var(--green);}
 .bu-opt.selected{border-color:var(--green);background:rgba(26,122,74,.1);color:var(--green);font-weight:600;}
-
-/* ── BUSINESS UNIT PICKER SCREEN ─────────────────────── */
 #bu-screen{display:none;position:fixed;inset:0;background:var(--bg);z-index:999;
-  display:none;align-items:center;justify-content:center;
+  align-items:center;justify-content:center;
   background-image:radial-gradient(ellipse 90% 60% at 50% -10%,rgba(26,122,74,0.13) 0%,transparent 65%);}
 #bu-screen.show{display:flex;}
 .bu-pick-card{width:100%;max-width:520px;padding:2rem;background:var(--card);
@@ -90,12 +80,11 @@ select option{background:#fff;}
 .bu-pick-btn.asset:hover{border-color:#8E44AD;background:rgba(142,68,173,.08);}
 .bu-skip{margin-top:1.1rem;text-align:center;font-size:.78rem;color:var(--muted);}
 .bu-skip a{color:var(--green);cursor:pointer;text-decoration:underline;}
-.bu-user-name{font-weight:600;color:var(--text);}
 </style>
 </head>
 <body>
 
-<!-- ── BUSINESS UNIT PICKER ─────────────────────────────── -->
+<!-- BUSINESS UNIT PICKER -->
 <div id="bu-screen">
   <div class="bu-pick-card">
     <h2>Welcome, <span id="bu-user-greeting">there</span>! 👋</h2>
@@ -126,7 +115,7 @@ select option{background:#fff;}
   </div>
 </div>
 
-<!-- ── LOGIN / REGISTER CARD ───────────────────────────── -->
+<!-- LOGIN / REGISTER CARD -->
 <div class="container">
   <div class="logo">
     <div class="logo-badge">🏆</div>
@@ -147,12 +136,6 @@ select option{background:#fff;}
       <input type="password" id="l-pin" placeholder="Enter your PIN" maxlength="6">
       <button class="btn" onclick="doLogin()">Sign In</button>
       <div class="msg" id="l-msg"></div>
-      <div class="demo-hint">
-        <strong>Demo accounts:</strong><br>
-        ID: <strong>63-111111A01</strong> &nbsp;PIN: <strong>1234</strong> (Alice — Life)<br>
-        ID: <strong>63-222222B02</strong> &nbsp;PIN: <strong>5678</strong> (Bob — Life)<br>
-        ID: <strong>63-333333C03</strong> &nbsp;PIN: <strong>9999</strong> (Carol — General)
-      </div>
     </div>
 
     <!-- REGISTER -->
@@ -188,10 +171,12 @@ function showTab(tab){
 }
 function selectBU(el,val){
   document.querySelectorAll('.bu-opt').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');document.getElementById('r-unit').value=val;
+  el.classList.add('selected');
+  document.getElementById('r-unit').value=val;
 }
 function showMsg(id,text,type){
-  const el=document.getElementById(id);el.textContent=text;el.className='msg '+type;el.style.display='block';
+  const el=document.getElementById(id);
+  el.textContent=text;el.className='msg '+type;el.style.display='block';
 }
 
 async function doLogin(){
@@ -235,11 +220,15 @@ async function doRegister(){
     body:JSON.stringify(body)});
   const data=await res.json();
   if(data.success){
-    loggedInName = data.name || body.full_name.split(' ')[0] || 'there';
-    document.getElementById('bu-user-greeting').textContent = loggedInName;
+    // Session is set server-side — go straight to BU picker like after login
+    loggedInName=data.name||body.full_name.split(' ')[0]||'there';
+    document.getElementById('bu-user-greeting').textContent=loggedInName;
     document.getElementById('bu-screen').classList.add('show');
-  } else {showMsg('r-msg',data.message,'error');}
+  } else {
+    showMsg('r-msg',data.message,'error');
+  }
 }
+
 document.addEventListener('keydown',e=>{
   if(e.key==='Enter'){
     const active=document.querySelector('.tab.active');
