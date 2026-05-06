@@ -235,8 +235,9 @@ async function doRegister(){
     body:JSON.stringify(body)});
   const data=await res.json();
   if(data.success){
-    showMsg('r-msg','Account created! You can now sign in.','success');
-    setTimeout(()=>showTab('login'),1500);
+    loggedInName = data.name || body.full_name.split(' ')[0] || 'there';
+    document.getElementById('bu-user-greeting').textContent = loggedInName;
+    document.getElementById('bu-screen').classList.add('show');
   } else {showMsg('r-msg',data.message,'error');}
 }
 document.addEventListener('keydown',e=>{
