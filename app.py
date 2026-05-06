@@ -70,10 +70,9 @@ def register():
         d.get("business_unit", "LIFE").strip()
     )
     if result.get("success"):
-        # Auto-login after registration so the BU picker works correctly
+        # Auto-login: set session so the BU picker redirect works
         session["phone_number"] = d["phone_number"].strip()
-        name = d["full_name"].strip().split()[0]
-        result["name"] = name
+        result["name"] = d["full_name"].strip().split()[0]
     return jsonify(result)
 
 @app.route("/logout")
